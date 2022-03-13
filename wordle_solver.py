@@ -1,4 +1,4 @@
-from best_words import enter_guess_result
+from game_state import enter_guess_result
 
 # a,b r,y o,y s,g e,g
 

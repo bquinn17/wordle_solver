@@ -3,6 +3,12 @@ BAD_LETTERS = set()
 YELLOW_LETTERS = dict()
 
 
+def get_remaining_words(guess_result, current_wordlist):
+    parse_guess_result(guess_result)
+    remaining_words = eliminate(current_wordlist)
+    return remaining_words
+
+
 def eliminate(current_word_list):
     result_word_list = []
     for word in current_word_list:
