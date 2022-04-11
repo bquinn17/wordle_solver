@@ -1,9 +1,11 @@
-from game_state import enter_guess_result
+from game_state import GameState
 
 # a,b r,y o,y s,g e,g
 
+
 def main():
     guess_result = []
+    game_state = GameState()
     while True:
         print("Enter guess result: ")
         guess_result_string = input()
@@ -11,7 +13,7 @@ def main():
             char, result = char_result.split(',')
             guess_result.append((char, result))
         print(guess_result)
-        enter_guess_result(guess_result)
+        game_state.enter_guess_result(guess_result)
 
 
 if __name__ == "__main__":

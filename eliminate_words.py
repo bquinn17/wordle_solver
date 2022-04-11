@@ -1,4 +1,4 @@
-KNOWN_LETTLERS = [None, None, None, None, None]
+KNOWN_LETTERS = [None, None, None, None, None]
 BAD_LETTERS = set()
 YELLOW_LETTERS = dict()
 
@@ -20,14 +20,14 @@ def eliminate(current_word_list):
 
 
 def parse_guess_result(guess_result):
-    global KNOWN_LETTLERS, BAD_LETTERS, YELLOW_LETTERS
+    global KNOWN_LETTERS, BAD_LETTERS, YELLOW_LETTERS
     for i in range(len(guess_result)):
         character_result = guess_result[i]
         character = character_result[0]
         result = character_result[1]
 
         if result == 'g':
-            KNOWN_LETTLERS[i] = character
+            KNOWN_LETTERS[i] = character
         elif result == 'b':
             BAD_LETTERS.add(character)
         elif result == 'y':
@@ -41,10 +41,9 @@ def parse_guess_result(guess_result):
             print(f"Error: invalid result for character: {result}")
 
 
-
 def __test_word__(word):
     for char in YELLOW_LETTERS:
-        if not char in word:
+        if char not in word:
             # All yellow letters must appear somewhere in the word
             return False
 
@@ -53,8 +52,8 @@ def __test_word__(word):
         if character in BAD_LETTERS:
             # There cannot be any bad letters in the word
             return False
-        elif KNOWN_LETTLERS[i] != None:
-            if KNOWN_LETTLERS[i] != character:
+        elif KNOWN_LETTERS[i] is not None:
+            if KNOWN_LETTERS[i] != character:
                 # If there is a green letter in this position, it must match
                 return False
         elif character in YELLOW_LETTERS:
@@ -65,11 +64,11 @@ def __test_word__(word):
 
 
 if __name__ == "__main__":
-    EXAMPLE_GUESS_RESULT = (('a','y'),('r','b'),('o','b'),('s','g'),('e','g'))
+    EXAMPLE_GUESS_RESULT = (('a', 'y'), ('r', 'b'), ('o', 'b'), ('s', 'g'), ('e', 'g'))
     EXAMPLE_WORD_LIST = ('arose', 'blase', 'blown')
     parse_guess_result(EXAMPLE_GUESS_RESULT)
     print(f"BAD_LETTERS: {BAD_LETTERS}")
-    print(f"KNOWN_LETTLERS: {KNOWN_LETTLERS}")
+    print(f"KNOWN_LETTERS: {KNOWN_LETTERS}")
     print(f"YELLOW_LETTERS: {YELLOW_LETTERS}")
     new_word_list = eliminate(EXAMPLE_WORD_LIST)
     print(new_word_list)
