@@ -7,15 +7,17 @@ class GameState:
     def __init__(self):
         self.wordlist_file = 'corncob_lowercase.txt'
         self.current_wordlist = self.__get_five_letter_words__()
+        self.known_letters = [None, None, None, None, None]
+        self.bad_letters = set()
+        self.yellow_letters = dict()
 
     def enter_guess_result(self, guess_result):
-        remaining_words = get_remaining_words(guess_result, self.current_wordlist)
+        remaining_words = get_remaining_words(guess_result, self)
 
         self.current_wordlist = remaining_words
 
         words_ranked = get_best_words(remaining_words)
-        print(words_ranked)
-        print("Total remaining words: ", len(remaining_words))
+        return words_ranked
 
     def __get_five_letter_words__(self):
         five_letter_words = []
