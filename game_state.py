@@ -5,7 +5,7 @@ from eliminate_words import get_remaining_words
 class GameState:
 
     def __init__(self):
-        self.wordlist_file = 'corncob_lowercase.txt'
+        self.wordlist_file = 'word_lists/corncob_5_letters.txt'
         self.current_wordlist = self.__get_five_letter_words__()
         self.known_letters = [None, None, None, None, None]
         self.bad_letters = set()
