@@ -15,10 +15,7 @@ def main():
             char, result = char_result.split(',')
             guess_result.append((char, result))
         print(guess_result)
-        words_ranked = game_state.enter_guess_result(guess_result)
-        print("Top suggested guesses: ")
-        print(dict(itertools.islice(words_ranked.items(), 5)))
-        print("Total remaining words: ", len(game_state.current_wordlist))
+        game_state.enter_guess_result(guess_result)
 
 
 if __name__ == "__main__":

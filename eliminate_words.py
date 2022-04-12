@@ -1,11 +1,11 @@
 
 def get_remaining_words(guess_result, game_state):
     __parse_guess_result__(guess_result, game_state)
-    remaining_words = eliminate(game_state)
+    remaining_words = __eliminate__(game_state)
     return remaining_words
 
 
-def eliminate(game_state):
+def __eliminate__(game_state):
     result_word_list = []
     for word in game_state.current_wordlist:
         keep_word = __test_word__(word, game_state)
