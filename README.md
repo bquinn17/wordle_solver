@@ -5,7 +5,7 @@ that do not work from an english word list, and suggesting the best possible gue
 
 ## How to use
 
-1. Enter your favorite first word into a wordle game (see Best First Word).
+1. Enter your favorite first word into a wordle game (see [Best First Word](#best-first-word)).
 2. Run `python3 wordle_solver.py`.
 3. Enter the results from you guess like the example below, where `b` is for 
 black/gray letters, `y` is for yellow letters, and `g` is for green letters.
