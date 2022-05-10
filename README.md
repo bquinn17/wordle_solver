@@ -16,7 +16,10 @@ black/gray letters, `y` is for yellow letters, and `g` is for green letters.
 
 ![image](https://user-images.githubusercontent.com/14142655/167738723-22471817-2320-4666-af25-676194e03431.png)
 
-`a,b r,b o,g s,y e,b`
+```
+Enter guess result: 
+a,b r,b o,g s,y e,b
+```
 
 ## How it Works
 
