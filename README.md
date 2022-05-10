@@ -1,4 +1,4 @@
-# wordle_solver
+# Wordle Solver
 
 The script `wordle_solver.py` will assist you in solving wordle games by automatically eliminating words 
 that do not work from an english word list, and suggesting the best possible guesses.
