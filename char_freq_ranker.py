@@ -30,6 +30,6 @@ def create_word_score_map(five_letter_words, char_frequency_map):
                 letter_set.add(char)
         word_score_map[word] = word_sum
 
-    word_score_map = dict(sorted(word_score_map.items(), key=lambda item: item[1]))
+    word_score_map = dict(sorted(word_score_map.items(), key=lambda item: item[1], reverse=True))
 
     return word_score_map

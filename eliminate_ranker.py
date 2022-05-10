@@ -30,7 +30,7 @@ def test_word(word_to_guess, remaining_words, game_state):
         words_eliminated = current_wordlist_size - len(scenario_remaining_words)
         total_words_eliminated += words_eliminated
 
-    return total_words_eliminated / current_wordlist_size
+    return round(total_words_eliminated / current_wordlist_size, 2)
 
 
 def __generate_guess_result__(guessed_word: str, actual_word: str):
