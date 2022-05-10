@@ -5,7 +5,7 @@ that do not work from an english word list, and suggesting the best possible gue
 
 ## How to use
 
-1. Enter your favorite first word into a wordle game (I use arose).
+1. Enter your favorite first word into a wordle game (see Best First Word).
 2. Run `python3 wordle_solver.py`.
 3. Enter the results from you guess like the example below, where `b` is for 
 black/gray letters, `y` is for yellow letters, and `g` is for green letters.
@@ -28,3 +28,13 @@ The solver uses two strategies:
 - The first strategy `char_freq_ranker` ranks potential guess by the sum of the number of words each letter occurs in. 
 - The second strategy `eliminate_ranker` calculates the average number of eliminated words each guess will have, given 
 that the target word is any remaining word.
+
+## Best First Word
+
+By running these ranking algorithms once on an entire starting wordlist, we can calculate what will **always** be the best 
+starting word. Below are the results from running the rankers against the full word list:
+
+```
+Top suggested guesses (char freq ranker): 
+{'arose': 9170, 'earls': 9067, 'laser': 9067, 'reals': 9067, 'arise': 9027}
+```
