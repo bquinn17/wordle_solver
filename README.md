@@ -14,3 +14,10 @@ black/gray letters, `y` is for yellow letters, and `g` is for green letters.
 
 `a,b r,y o,y s,g e,g`
 
+## How it Works
+
+The solver uses two strategies:
+
+- The first strategy `char_freq_ranker` ranks potential guess by the sum of the number of words each letter occurs in. 
+- The second strategy `eliminate_ranker` calculates the average number of eliminated words each guess will have, given 
+that the target word is any remaining word.
