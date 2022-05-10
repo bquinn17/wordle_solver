@@ -12,7 +12,11 @@ black/gray letters, `y` is for yellow letters, and `g` is for green letters.
 4. Choose one of the top suggestions to enter next.
 5. Go back to step 3.
 
-`a,b r,y o,y s,g e,g`
+### Entering results from this wordle guess:
+
+![image](https://user-images.githubusercontent.com/14142655/167738723-22471817-2320-4666-af25-676194e03431.png)
+
+`a,b r,b o,g s,y e,b`
 
 ## How it Works
 
