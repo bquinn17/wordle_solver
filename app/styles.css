@@ -1,0 +1,226 @@
+:root {
+    --bg: #121213;
+    --panel: #1c1c1e;
+    --border: #3a3a3c;
+    --text: #f7f7f8;
+    --muted: #9a9a9c;
+    --accent: #538d4e;
+    --gray: #3a3a3c;
+    --yellow: #b59f3b;
+    --green: #538d4e;
+    --key-bg: #818384;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    text-align: center;
+    padding: 1.25rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.tagline {
+    margin: 0.25rem 0 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+@media (max-width: 760px) {
+    main { grid-template-columns: 1fr; }
+}
+
+#board-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#board {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(5, 58px);
+    gap: 6px;
+}
+
+.cell {
+    width: 58px;
+    height: 58px;
+    border: 2px solid var(--border);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    user-select: none;
+    transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.row.active .cell {
+    cursor: text;
+}
+
+.row.active .cell.filled {
+    border-color: var(--muted);
+    cursor: pointer;
+}
+
+.cell.state-b { background: var(--gray); border-color: var(--gray); }
+.cell.state-y { background: var(--yellow); border-color: var(--yellow); }
+.cell.state-g { background: var(--green); border-color: var(--green); }
+
+#controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+button {
+    font: inherit;
+    font-weight: 600;
+    background: var(--accent);
+    color: var(--text);
+    border: none;
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background: var(--gray);
+    color: var(--muted);
+    cursor: not-allowed;
+}
+
+button.secondary {
+    background: var(--key-bg);
+}
+
+#status {
+    color: var(--muted);
+    min-height: 1.25em;
+    margin: 0;
+    text-align: center;
+}
+
+#status.error { color: #e06c75; }
+
+#suggestions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.panel h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.panel h2 span {
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.panel ol,
+.panel ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.panel li {
+    padding: 2px 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.panel li .score {
+    color: var(--muted);
+    margin-left: 0.5rem;
+    font-size: 0.9em;
+}
+
+#remaining-preview {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    max-height: 9rem;
+    overflow-y: auto;
+}
+
+#remaining-preview li {
+    background: #2a2a2c;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+footer {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.chip {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 0 4px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.chip.state-b { background: var(--gray); }
+.chip.state-y { background: var(--yellow); }
+.chip.state-g { background: var(--green); }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle Solver</title>
+    <link rel="stylesheet" href="app/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Wordle Solver</h1>
+        <p class="tagline">Type a guess, click each letter to toggle its color, then submit.</p>
+    </header>
+
+    <main>
+        <section id="board-section">
+            <div id="board"></div>
+            <div id="controls">
+                <button id="submit-btn" disabled>Submit guess</button>
+                <button id="reset-btn" class="secondary">Reset</button>
+            </div>
+            <p id="status">Loading word list...</p>
+        </section>
+
+        <section id="suggestions-section">
+            <div class="panel">
+                <h2>Remaining words <span id="remaining-count">—</span></h2>
+                <ul id="remaining-preview"></ul>
+            </div>
+
+            <div class="panel">
+                <h2>Top guesses (character frequency)</h2>
+                <ol id="char-freq-list"></ol>
+            </div>
+
+            <div class="panel">
+                <h2>Top guesses (eliminate ranker) <span id="eliminate-status"></span></h2>
+                <ol id="eliminate-list"></ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            <strong>Legend:</strong>
+            <span class="chip state-b">gray = not in word</span>
+            <span class="chip state-y">yellow = wrong spot</span>
+            <span class="chip state-g">green = correct spot</span>
+        </p>
+    </footer>
+
+    <script src="app/js/solver.js"></script>
+    <script src="app/js/app.js"></script>
+</body>
+</html>
