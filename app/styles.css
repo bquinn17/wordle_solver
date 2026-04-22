@@ -246,6 +246,13 @@ button.secondary {
     font-size: 0.9em;
 }
 
+.panel-hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    font-style: italic;
+}
+
 #remaining-preview {
     list-style: none;
     padding-left: 0;

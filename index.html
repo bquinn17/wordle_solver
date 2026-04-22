@@ -26,7 +26,7 @@
             <div id="board"></div>
             <div id="controls">
                 <button id="submit-btn" disabled>Submit guess</button>
-                <button id="reset-btn" class="secondary">Reset</button>
+                <button id="reset-btn" class="secondary">New Game</button>
             </div>
             <p id="status">Loading word list...</p>
         </section>
@@ -34,11 +34,13 @@
         <section id="suggestions-section">
             <div class="panel">
                 <h2>Top guesses (eliminate ranker) <span id="eliminate-status"></span><button class="info-btn" id="eliminate-info-btn" title="About this algorithm">ⓘ</button></h2>
+                <p class="panel-hint">Tap a word to add it to your guess</p>
                 <ol id="eliminate-list"></ol>
             </div>
 
             <div class="panel">
                 <h2>Top guesses (character frequency) <button class="info-btn" id="freq-info-btn" title="About this algorithm">ⓘ</button></h2>
+                <p class="panel-hint">Tap a word to add it to your guess</p>
                 <ol id="char-freq-list"></ol>
             </div>
 
