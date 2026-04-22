@@ -40,6 +40,10 @@
     const targetInputContainer = document.getElementById('target-input-container');
     const targetInput = document.getElementById('target-input');
     const targetSetBtn = document.getElementById('target-set-btn');
+    const eliminateModal = document.getElementById('eliminate-modal');
+    const freqModal = document.getElementById('freq-modal');
+    const eliminateInfoBtn = document.getElementById('eliminate-info-btn');
+    const freqInfoBtn = document.getElementById('freq-info-btn');
 
     const STATES = ['b', 'y', 'g']; // gray -> yellow -> green
     const state = {
@@ -112,6 +116,14 @@
     function setStatus(msg, isError = false) {
         statusEl.textContent = msg || '';
         statusEl.classList.toggle('error', !!isError);
+    }
+
+    function openModal(modal) {
+        modal.classList.add('active');
+    }
+
+    function closeModal(modal) {
+        modal.classList.remove('active');
     }
 
     function createBoard() {
@@ -321,7 +333,6 @@
         if (noGuessesYet()) {
             renderList(charFreqListEl, INITIAL_CHAR_FREQ_TOP);
             renderList(eliminateListEl, INITIAL_ELIMINATION_RANKER_TOP);
-            eliminateStatusEl.textContent = '(pre-computed first guess)';
             return;
         }
 
@@ -438,6 +449,22 @@
 
     targetInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') targetSetBtn.click();
+    });
+
+    // Modal handling
+    eliminateInfoBtn.addEventListener('click', () => openModal(eliminateModal));
+    freqInfoBtn.addEventListener('click', () => openModal(freqModal));
+
+    document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.target.closest('.modal').classList.remove('active');
+        });
+    });
+
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal(modal);
+        });
     });
 
     loadWordList();

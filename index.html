@@ -33,12 +33,12 @@
 
         <section id="suggestions-section">
             <div class="panel">
-                <h2>Top guesses (eliminate ranker) <span id="eliminate-status"></span></h2>
+                <h2>Top guesses (eliminate ranker) <span id="eliminate-status"></span><button class="info-btn" id="eliminate-info-btn" title="About this algorithm">ⓘ</button></h2>
                 <ol id="eliminate-list"></ol>
             </div>
 
             <div class="panel">
-                <h2>Top guesses (character frequency)</h2>
+                <h2>Top guesses (character frequency) <button class="info-btn" id="freq-info-btn" title="About this algorithm">ⓘ</button></h2>
                 <ol id="char-freq-list"></ol>
             </div>
 
@@ -48,6 +48,29 @@
             </div>
         </section>
     </main>
+
+    <!-- Modals -->
+    <div id="eliminate-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">×</button>
+            <h3>Eliminate Ranker Algorithm</h3>
+            <p>This algorithm scores words by how effectively they eliminate possibilities. For each candidate word, it simulates guessing that word against every remaining possibility and counts the average number of words that would be eliminated.</p>
+            <p><strong>The score:</strong> Average number of words you'd eliminate by guessing this word. Higher scores are better — they narrow down the possibilities faster.</p>
+            <p>Words that eliminate the most options on average are ranked highest.</p>
+            <p><strong>First guess:</strong> For the opening move, this ranking is pre-computed to avoid expensive calculations.</p>
+        </div>
+    </div>
+
+    <div id="freq-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">×</button>
+            <h3>Character Frequency Algorithm</h3>
+            <p>This algorithm scores words by the sum of frequencies of their unique letters. It counts how often each letter appears in the remaining word list, then scores each word by adding up the frequencies of its distinct letters.</p>
+            <p><strong>The score:</strong> Sum of how often each unique letter in this word appears across all remaining words. Higher scores indicate words with more common letters.</p>
+            <p>Words containing more frequent letters are ranked highest.</p>
+            <p><strong>First guess:</strong> For the opening move, this ranking is pre-computed to avoid unnecessary calculations.</p>
+        </div>
+    </div>
 
     <footer>
         <p>
