@@ -63,19 +63,22 @@
         const result = Array(WORD_LENGTH).fill('b');
         const targetLetters = target.split('');
 
-        // First pass: mark greens
+        // First pass: mark greens and remove from available letters
         for (let i = 0; i < WORD_LENGTH; i++) {
-            if (guess[i] === target[i]) {
+            if (guess[i] === targetLetters[i]) {
                 result[i] = 'g';
                 targetLetters[i] = null;
             }
         }
 
-        // Second pass: mark yellows
+        // Second pass: mark yellows for remaining letters
         for (let i = 0; i < WORD_LENGTH; i++) {
-            if (result[i] === 'b' && targetLetters.includes(guess[i])) {
-                result[i] = 'y';
-                targetLetters[targetLetters.indexOf(guess[i])] = null;
+            if (result[i] === 'b') {
+                const letterIndex = targetLetters.indexOf(guess[i]);
+                if (letterIndex !== -1) {
+                    result[i] = 'y';
+                    targetLetters[letterIndex] = null;
+                }
             }
         }
 
@@ -163,6 +166,8 @@
     function onKeydown(e) {
         if (!state.allWords) return;
         if (state.rowIndex >= MAX_ROWS) return;
+        // In guess mode, don't handle board input while typing in the target input
+        if (state.mode === 'guess' && document.activeElement === targetInput) return;
 
         const row = currentRow();
         if (e.key === 'Enter') {
@@ -428,9 +433,12 @@
             return;
         }
         state.targetWord = word;
-        setStatus(`Target set to "${word}". Start guessing!`);
+        state.game = new GameState(state.allWords);
+        state.rowIndex = 0;
+        createBoard();
         targetInputContainer.style.display = 'none';
-        reset();
+        setStatus(`Target set to "${word}". Start guessing!`);
+        renderSuggestions(state.allWords);
     });
 
     targetInput.addEventListener('keydown', (e) => {
