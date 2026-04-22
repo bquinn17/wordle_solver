@@ -88,5 +88,5 @@ Then open <http://localhost:8000/> in your browser.
 4. The page shows the remaining word count, the top 5 guesses by character-frequency score, and the top 5
    guesses by the eliminate ranker (skipped when the remaining list is very large, since it is O(n²)).
 
-The first-guess suggestions are hard-coded in `app/js/app.js` (`INITIAL_CHAR_FREQ_TOP`) since they are
+The first-guess suggestions are hard-coded in `app/js/app.js` (ie. `INITIAL_CHAR_FREQ_TOP`) since they are
 always the same regardless of play. Regenerate them by running the Python solver on the full word list.

@@ -18,11 +18,11 @@
     ];
 
     const INITIAL_ELIMINATION_RANKER_TOP = [
-        tares: 4175.68
-        rates: 4173.03
-        tales: 4171.28
-        saner: 4169.32
-        reals: 4169.12
+        ['tares', 4175.68],
+        ['rates', 4173.03],
+        ['tales', 4171.28],
+        ['saner', 4169.32],
+        ['reals', 4169.12],
     ];
 
 
@@ -178,11 +178,33 @@
         setStatus(`${remaining.length} words remain.`);
     }
 
+    function fillWordIntoBoard(word) {
+        if (!state.allWords || state.rowIndex >= MAX_ROWS) return;
+        const row = currentRow();
+        if (!row) return;
+
+        row.cells.forEach(cell => {
+            cell.letter = '';
+            cell.color = 'b';
+            renderCell(cell);
+        });
+
+        for (let i = 0; i < word.length && i < WORD_LENGTH; i++) {
+            row.cells[i].letter = word[i];
+            row.cells[i].color = 'b';
+            renderCell(row.cells[i]);
+        }
+
+        updateSubmitButton();
+    }
+
     function renderList(el, scoredPairs, limit = 5) {
         el.innerHTML = '';
         scoredPairs.slice(0, limit).forEach(([word, score]) => {
             const li = document.createElement('li');
             li.innerHTML = `${word}<span class="score">${score}</span>`;
+            li.style.cursor = 'pointer';
+            li.addEventListener('click', () => fillWordIntoBoard(word));
             el.appendChild(li);
         });
         if (scoredPairs.length === 0) {
@@ -217,8 +239,8 @@
 
         if (noGuessesYet()) {
             renderList(charFreqListEl, INITIAL_CHAR_FREQ_TOP);
-            eliminateStatusEl.textContent = '(pre-computed first guess — submit a result to run)';
-            renderList(eliminateListEl, []);
+            renderList(eliminateListEl, INITIAL_ELIMINATION_RANKER_TOP);
+            eliminateStatusEl.textContent = '(pre-computed first guess)';
             return;
         }
 
