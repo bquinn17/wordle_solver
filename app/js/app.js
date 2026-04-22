@@ -61,24 +61,19 @@
 
     function generateGuessResultFromTarget(guess, target) {
         const result = Array(WORD_LENGTH).fill('b');
-        const targetLetters = target.split('');
+        const targetSet = new Set(target);
 
-        // First pass: mark greens and remove from available letters
+        // First pass: mark greens
         for (let i = 0; i < WORD_LENGTH; i++) {
-            if (guess[i] === targetLetters[i]) {
+            if (guess[i] === target[i]) {
                 result[i] = 'g';
-                targetLetters[i] = null;
             }
         }
 
-        // Second pass: mark yellows for remaining letters
+        // Second pass: mark yellows for letters in word but wrong position
         for (let i = 0; i < WORD_LENGTH; i++) {
-            if (result[i] === 'b') {
-                const letterIndex = targetLetters.indexOf(guess[i]);
-                if (letterIndex !== -1) {
-                    result[i] = 'y';
-                    targetLetters[letterIndex] = null;
-                }
+            if (result[i] === 'b' && targetSet.has(guess[i])) {
+                result[i] = 'y';
             }
         }
 

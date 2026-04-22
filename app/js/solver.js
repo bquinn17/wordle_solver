@@ -29,7 +29,12 @@ function parseGuessResult(guessResult, gameState) {
         if (result === 'g') {
             gameState.knownLetters[i] = ch;
         } else if (result === 'b') {
-            gameState.badLetters.add(ch);
+            // Only mark as bad if we haven't seen this letter as green or yellow elsewhere
+            const isKnown = gameState.knownLetters.some(kl => kl === ch);
+            const isYellow = gameState.yellowLetters.has(ch);
+            if (!isKnown && !isYellow) {
+                gameState.badLetters.add(ch);
+            }
         } else if (result === 'y') {
             if (!gameState.yellowLetters.has(ch)) {
                 gameState.yellowLetters.set(ch, new Set());
