@@ -9,11 +9,20 @@
 <body>
     <header>
         <h1>Wordle Solver</h1>
-        <p class="tagline">Type a guess, click each letter to toggle its color, then submit.</p>
+        <div id="mode-selector">
+            <button id="mode-solver" class="mode-btn active" data-mode="solver">Solver</button>
+            <button id="mode-play" class="mode-btn" data-mode="play">Play</button>
+            <button id="mode-guess" class="mode-btn" data-mode="guess">Guess Towards</button>
+        </div>
+        <p class="tagline" id="tagline">Type a guess, click each letter to toggle its color, then submit.</p>
     </header>
 
     <main>
         <section id="board-section">
+            <div id="target-input-container" style="display: none; margin-bottom: 1rem;">
+                <input id="target-input" type="text" placeholder="Enter target word (5 letters)" maxlength="5" style="padding: 0.5rem; font-size: 1rem;">
+                <button id="target-set-btn">Set Target</button>
+            </div>
             <div id="board"></div>
             <div id="controls">
                 <button id="submit-btn" disabled>Submit guess</button>

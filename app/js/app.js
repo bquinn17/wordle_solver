@@ -35,6 +35,11 @@
     const charFreqListEl = document.getElementById('char-freq-list');
     const eliminateListEl = document.getElementById('eliminate-list');
     const eliminateStatusEl = document.getElementById('eliminate-status');
+    const taglineEl = document.getElementById('tagline');
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    const targetInputContainer = document.getElementById('target-input-container');
+    const targetInput = document.getElementById('target-input');
+    const targetSetBtn = document.getElementById('target-set-btn');
 
     const STATES = ['b', 'y', 'g']; // gray -> yellow -> green
     const state = {
@@ -43,6 +48,8 @@
         rowIndex: 0,
         rows: [], // { cells: [{el, letter, color}] }
         eliminateRunId: 0,
+        mode: 'solver', // 'solver', 'play', or 'guess'
+        targetWord: null, // for play and guess modes
     };
 
     function noGuessesYet() {
@@ -50,6 +57,58 @@
         return g.knownLetters.every(c => c === null)
             && g.badLetters.size === 0
             && g.yellowLetters.size === 0;
+    }
+
+    function generateGuessResultFromTarget(guess, target) {
+        const result = Array(WORD_LENGTH).fill('b');
+        const targetLetters = target.split('');
+
+        // First pass: mark greens
+        for (let i = 0; i < WORD_LENGTH; i++) {
+            if (guess[i] === target[i]) {
+                result[i] = 'g';
+                targetLetters[i] = null;
+            }
+        }
+
+        // Second pass: mark yellows
+        for (let i = 0; i < WORD_LENGTH; i++) {
+            if (result[i] === 'b' && targetLetters.includes(guess[i])) {
+                result[i] = 'y';
+                targetLetters[targetLetters.indexOf(guess[i])] = null;
+            }
+        }
+
+        return result.map((color, i) => [guess[i], color]);
+    }
+
+    function switchMode(newMode) {
+        state.mode = newMode;
+        state.targetWord = null;
+        targetInput.value = '';
+
+        modeButtons.forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`mode-${newMode}`).classList.add('active');
+
+        if (newMode === 'solver') {
+            taglineEl.textContent = 'Type a guess, click each letter to toggle its color, then submit.';
+            targetInputContainer.style.display = 'none';
+        } else if (newMode === 'play') {
+            taglineEl.textContent = 'Guess the word! The solver will help you narrow it down.';
+            targetInputContainer.style.display = 'none';
+            selectRandomTarget();
+        } else if (newMode === 'guess') {
+            taglineEl.textContent = 'Enter a target word, then guess towards it with solver help.';
+            targetInputContainer.style.display = 'block';
+            targetInput.focus();
+        }
+
+        if (state.allWords) reset();
+    }
+
+    function selectRandomTarget() {
+        const randomIdx = Math.floor(Math.random() * state.allWords.length);
+        state.targetWord = state.allWords[randomIdx];
     }
 
     function setStatus(msg, isError = false) {
@@ -143,6 +202,7 @@
         if (r !== state.rowIndex) return;
         const cell = state.rows[r].cells[c];
         if (!cell.letter) return;
+        if (state.mode !== 'solver') return; // Only allow color cycling in solver mode
         const idx = STATES.indexOf(cell.color);
         cell.color = STATES[(idx + 1) % STATES.length];
         renderCell(cell);
@@ -150,26 +210,47 @@
 
     function submitGuess() {
         const row = currentRow();
-        const guessResult = row.cells.map(c => [c.letter, c.color]);
+        const guess = row.cells.map(c => c.letter).join('');
+
+        // In play/guess modes, auto-generate the result from target word
+        let guessResult;
+        if (state.mode === 'play' || state.mode === 'guess') {
+            guessResult = generateGuessResultFromTarget(guess, state.targetWord);
+            // Update board colors to show the result
+            row.cells.forEach((cell, i) => {
+                cell.color = guessResult[i][1];
+                renderCell(cell);
+            });
+        } else {
+            guessResult = row.cells.map(c => [c.letter, c.color]);
+        }
 
         const remaining = getRemainingWords(guessResult, state.game);
         state.game.currentWordlist = remaining;
 
         renderSuggestions(remaining);
 
-        if (remaining.length === 1) {
-            setStatus(`Solved: the word is "${remaining[0]}".`);
+        const guessWord = guess;
+        if (guessWord === state.targetWord && state.targetWord) {
+            setStatus(`🎉 Correct! The word is "${state.targetWord}".`);
             submitBtn.disabled = true;
             return;
         }
+
         if (remaining.length === 0) {
-            setStatus('No words match these constraints. Check the colors you entered.', true);
+            const msg = state.targetWord
+                ? `No words match. Are you sure "${state.targetWord}" is correct?`
+                : 'No words match these constraints. Check the colors you entered.';
+            setStatus(msg, true);
             submitBtn.disabled = true;
             return;
         }
 
         if (state.rowIndex + 1 >= MAX_ROWS) {
-            setStatus(`Out of rows. ${remaining.length} words still possible.`);
+            const msg = state.targetWord
+                ? `Out of rows. The word was "${state.targetWord}".`
+                : `Out of rows. ${remaining.length} words still possible.`;
+            setStatus(msg);
             submitBtn.disabled = true;
             return;
         }
@@ -280,8 +361,22 @@
         state.game = new GameState(state.allWords);
         state.rowIndex = 0;
         createBoard();
-        setStatus(`${state.allWords.length} words loaded. Start with your opening guess.`);
-        renderSuggestions(state.allWords);
+
+        if (state.mode === 'play') {
+            selectRandomTarget();
+            setStatus('New game! Guess the word.');
+            renderSuggestions(state.allWords);
+        } else if (state.mode === 'guess') {
+            state.targetWord = null;
+            targetInputContainer.style.display = 'block';
+            targetInput.value = '';
+            targetInput.focus();
+            setStatus('Enter a target word.');
+            renderSuggestions(state.allWords);
+        } else {
+            setStatus(`${state.allWords.length} words loaded. Start with your opening guess.`);
+            renderSuggestions(state.allWords);
+        }
     }
 
     async function loadWordList() {
@@ -313,6 +408,33 @@
     submitBtn.addEventListener('click', submitGuess);
     resetBtn.addEventListener('click', () => {
         if (state.allWords) reset();
+    });
+
+    modeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            switchMode(mode);
+        });
+    });
+
+    targetSetBtn.addEventListener('click', () => {
+        const word = targetInput.value.trim().toLowerCase();
+        if (word.length !== WORD_LENGTH) {
+            setStatus(`Please enter a 5-letter word.`, true);
+            return;
+        }
+        if (!state.allWords.includes(word)) {
+            setStatus(`"${word}" is not in the word list.`, true);
+            return;
+        }
+        state.targetWord = word;
+        setStatus(`Target set to "${word}". Start guessing!`);
+        targetInputContainer.style.display = 'none';
+        reset();
+    });
+
+    targetInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') targetSetBtn.click();
     });
 
     loadWordList();
